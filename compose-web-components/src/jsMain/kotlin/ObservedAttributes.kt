@@ -1,3 +1,6 @@
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.compositionLocalOf
 import js.core.JsAny
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,9 +27,9 @@ class ObservedAttributes(vararg attributes: Attribute<*>) {
         fun <T> of(vararg attributes: Attribute<T>) = attributes.map { it.name }.toTypedArray()
     }
 
-    operator fun <T> get(attribute: Attribute<T>) : StateFlow<T>? {
+    operator fun <T> get(attribute: Attribute<T>) : StateFlow<T> {
         @Suppress("UNCHECKED_CAST")
-        return attributes[attribute] as? MutableStateFlow<T>
+        return requireNotNull(attributes[attribute] as? MutableStateFlow<T>) { "Attribute ${attribute.name} not found!" }
     }
 
     val names get() = attributes.keys.map { it.name }.toTypedArray()
@@ -38,3 +41,14 @@ class ObservedAttributes(vararg attributes: Attribute<*>) {
         attribute.value = key.cast(newValue?.toString())
     }
 }
+
+fun <T> ObservedAttribute(name: String, default: T, cast: (String?) -> T) =
+    ObservedAttributes.Attribute(
+        name = name,
+        default = default,
+        cast = cast
+    )
+
+val LocalObservedAttributes = compositionLocalOf<ObservedAttributes> { error("No observed attributes found!") }
+
+@Composable fun <T> observedAttribute(attribute: ObservedAttributes.Attribute<T>) = LocalObservedAttributes.current[attribute].collectAsState()

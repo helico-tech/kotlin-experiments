@@ -4,7 +4,6 @@ import web.components.CustomElement
 import web.components.CustomElementConstructor
 import web.components.ShadowRoot
 import web.components.ShadowRootInit
-import web.components.ShadowRootInit.Companion.invoke
 import web.components.ShadowRootMode
 import web.components.customElements
 import web.html.HTMLElement
@@ -31,8 +30,4 @@ interface WebComponentFactory<T : WebComponent> {
     }
 }
 
-class WebComponents(vararg val factories: WebComponentFactory<*>) {
-    fun registerAll() = factories.forEach { it.register() }
-}
-
-fun registerWebComponents(vararg factories: WebComponentFactory<*>) = WebComponents(*factories).registerAll()
+fun registerWebComponents(vararg factories: WebComponentFactory<*>) = factories.forEach { it.register() }
