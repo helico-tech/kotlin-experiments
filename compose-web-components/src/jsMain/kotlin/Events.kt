@@ -22,7 +22,7 @@ fun <T> Event(name: String, bubbles: Boolean? = null, cancellable: Boolean? = nu
 
 @Composable fun <T> eventDispatcher(descriptor: EventDescriptor<T>): EventDispatcher<T> {
     val element = LocalWebComponent.current
-    return remember {
+    return remember(element) {
         EventDispatcher(element, descriptor)
     }
 }
