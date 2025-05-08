@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="compose-web-components-js-1.0-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/compose-web-components/build/libs</output-path>
+    <root id="archive" name="compose-web-components-js-1.0-SNAPSHOT.jar">
+      <element id="module-output" name="kotlin-experiments.compose-web-components.jsMain" />
+    </root>
+  </artifact>
+</component>
