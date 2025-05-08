@@ -7,5 +7,13 @@
     <script src="compose-web-components.js" defer></script>
 </head>
 <body>
+    <my-web-component counter="5"></my-web-component>
+<script>
+    let i = 0;
+    setInterval(() => {
+        const el = document.querySelector('my-web-component')
+        el.setAttribute("counter", ++i);
+    }, 1000)
+</script>
 </body>
 </html>

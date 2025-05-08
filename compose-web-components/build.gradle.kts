@@ -22,6 +22,7 @@ kotlin {
                 implementation(compose.html.svg)
 
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-browser")
+                implementation(libs.kotlin.coroutines.core)
             }
         }
     }
