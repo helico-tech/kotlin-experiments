@@ -19,7 +19,6 @@ kotlin {
                 implementation(project.dependencies.platform(libs.kotlin.wrappers.bom))
                 implementation(compose.html.core)
                 implementation(compose.runtime)
-                implementation(compose.html.svg)
 
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-browser")
                 implementation(libs.kotlin.coroutines.core)

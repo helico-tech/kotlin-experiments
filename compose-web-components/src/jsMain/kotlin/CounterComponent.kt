@@ -8,7 +8,7 @@ import web.html.HtmlTagName
 @OptIn(ExperimentalJsExport::class)
 @JsExport
 @JsName("CounterComponent")
-class CounterComponent : ComposeWebComponent(COUNTER, MIN, MAX) {
+class CounterComponent : ComposeWebComponent(*observedAttributes) {
 
     @JsExport.Ignore
     companion object : WebComponentFactory<CounterComponent> {
@@ -21,7 +21,7 @@ class CounterComponent : ComposeWebComponent(COUNTER, MIN, MAX) {
 
         override val tagName = HtmlTagName<CounterComponent>("counter-component")
         override val clazz = CounterComponent::class.js
-        override val observedAttributes = ObservedAttributes.of(COUNTER, MIN, MAX)
+        override val observedAttributes : Array<ObservedAttributes.Attribute<*>> = arrayOf(COUNTER, MIN, MAX)
     }
 
     @Composable

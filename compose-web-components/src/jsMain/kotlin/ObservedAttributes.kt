@@ -23,10 +23,6 @@ class ObservedAttributes(vararg attributes: Attribute<*>) {
         }
     }
 
-    companion object {
-        fun <T> of(vararg attributes: Attribute<T>) = attributes.map { it.name }.toTypedArray()
-    }
-
     operator fun <T> get(attribute: Attribute<T>) : StateFlow<T> {
         @Suppress("UNCHECKED_CAST")
         return requireNotNull(attributes[attribute] as? MutableStateFlow<T>) { "Attribute ${attribute.name} not found!" }

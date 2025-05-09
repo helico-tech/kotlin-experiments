@@ -22,10 +22,10 @@ abstract class WebComponent(val shadowRootMode: ShadowRootMode, vararg attribute
 interface WebComponentFactory<T : WebComponent> {
     val tagName: HtmlTagName<T>
     val clazz: CustomElementConstructor<T>
-    val observedAttributes: Array<String>
+    val observedAttributes: Array<Attribute<*>>
 
     fun register() {
-        clazz.asDynamic().observedAttributes = observedAttributes
+        clazz.asDynamic().observedAttributes = observedAttributes.map { it.name }.toTypedArray()
         customElements.define(tagName, clazz)
     }
 }
