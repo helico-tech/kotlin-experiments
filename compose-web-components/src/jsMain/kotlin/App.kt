@@ -1,3 +1,6 @@
+import web.components.customElements
+import web.html.HtmlTagName
+
 fun main() {
-    registerWebComponents(CounterComponent)
+    customElements.define(HtmlTagName("timer-component"), TimerWebComponent::class.js)
 }

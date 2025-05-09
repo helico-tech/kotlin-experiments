@@ -4,27 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Compose Web Components</title>
-    <script src="compose-web-components.js"></script>
+    <script src="compose-web-components.js" defer></script>
 </head>
 <body>
-    <counter-component counter="5" min="10" max="20"><h1>Subcomponent</h1></counter-component>
-
-    <button id="inc">Increase</button>
-    <button id="dec">Decrease</button>
-
-    <script>
-        const getCounterComponent = () => document.querySelector("counter-component");
-        const getCounter = () => Number.parseInt(getCounterComponent().getAttribute("counter"));
-
-        document.getElementById("inc").onclick = () => {
-            getCounterComponent().setAttribute("counter", getCounter() + 1);
-        }
-        document.getElementById("dec").onclick = () => {
-            getCounterComponent().setAttribute("counter", getCounter() - 1)
-        }
-
-        getCounterComponent().addEventListener("min-exceeded", (data) => console.log("min exceeded", data.detail))
-        getCounterComponent().addEventListener("max-exceeded", (data) => console.log("max exceeded", data.detail))
-    </script>
+    <timer-component></timer-component>
 </body>
 </html>
