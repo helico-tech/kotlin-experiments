@@ -7,6 +7,12 @@
     <script src="compose-web-components.js" defer></script>
 </head>
 <body>
-    <timer-component></timer-component>
+    <timer-component time="100"></timer-component>
+    <script>
+        const timer = document.querySelector('timer-component');
+        setTimeout(() => {
+            timer.setAttribute("time", 200)
+        }, 1000)
+    </script>
 </body>
 </html>
