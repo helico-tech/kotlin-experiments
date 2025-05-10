@@ -2,6 +2,8 @@ import js.core.JsAny
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import org.jetbrains.compose.web.css.StyleSheet
+import org.jetbrains.compose.web.dom.stringPresentation
 import web.components.CustomElement
 import web.components.CustomElementConstructor
 import web.components.ShadowRoot
@@ -26,6 +28,7 @@ abstract class WebComponent(
         val tagName: String,
         val clazz: CustomElementConstructor<T>,
         val attributes: List<ObservedAttribute<*>> = emptyList(),
+        val styleSheet: StyleSheet? = null,
     ) {
         fun register() {
             clazz.asDynamic().observedAttributes = attributes.map { it.name }.toTypedArray()
@@ -61,6 +64,15 @@ abstract class WebComponent(
     data class EventDescriptor<T>(val name: String, val bubbles: Boolean = true, val cancellable: Boolean? = null, val composed: Boolean = true)
 
     val shadow: ShadowRoot = this.attachShadow(ShadowRootInit(mode = mode))
+
+    init {
+        factory.styleSheet?.let {
+            document.createElement("style").apply {
+                textContent = factory.styleSheet.cssRules.joinToString(separator = "\n\n") { it.stringPresentation() }
+                shadow.appendChild(this)
+            }
+        }
+    }
 
     val root = document.createElement(rootElementTagName).apply {
         shadow.appendChild(this)
