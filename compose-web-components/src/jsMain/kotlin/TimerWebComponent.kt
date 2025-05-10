@@ -1,3 +1,5 @@
+import TimerWebComponent.Events.TimerEnded
+import TimerWebComponent.Events.TimerStarted
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -8,25 +10,26 @@ import kotlinx.coroutines.delay
 import org.jetbrains.compose.web.dom.H1
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.renderComposable
-import web.events.CustomEvent
-import web.events.CustomEventInit
-import web.events.EventType
 
 @OptIn(ExperimentalJsExport::class)
 @JsExport
 @JsName("TimerWebComponent")
-class TimerWebComponent : WebComponent(
-    factory = Factory
-) {
-    object Attributes {
-        val Time = ObservedAttribute("time", 0, { it?.toString()?.toIntOrNull() ?: 0 })
-    }
+class TimerWebComponent : WebComponent(factory = Factory) {
 
     object Factory : WebComponent.Factory<TimerWebComponent>(
         tagName = "timer-component",
         clazz = TimerWebComponent::class.js,
         attributes = listOf(Attributes.Time),
     )
+
+    object Attributes {
+        val Time = ObservedAttribute("time", 0, { it?.toString()?.toIntOrNull() ?: 0 })
+    }
+
+    object Events {
+        val TimerStarted = EventDescriptor<Int>("timerStarted")
+        val TimerEnded = EventDescriptor<Int>("timerEnded")
+    }
 
     override fun connectedCallback() {
         renderComposable(root as org.w3c.dom.HTMLElement) {
@@ -37,7 +40,7 @@ class TimerWebComponent : WebComponent(
                 currentTime = initialTime
 
                 while (true) {
-                    if (currentTime == initialTime) dispatchTimerStarted(initialTime)
+                    if (currentTime == initialTime) dispatchEvent(TimerStarted, initialTime)
 
                     delay(1000)
 
@@ -45,7 +48,7 @@ class TimerWebComponent : WebComponent(
                     currentTime = currentTime.coerceAtLeast(0)
 
                     if (currentTime == 0) {
-                        dispatchTimerEnded(initialTime)
+                        dispatchEvent(TimerEnded, initialTime)
                         break
                     }
                 }
@@ -53,15 +56,5 @@ class TimerWebComponent : WebComponent(
 
             H1 { Text("Time: ${currentTime}") }
         }
-    }
-
-    private fun dispatchTimerStarted(initialTime: Int) {
-        val event = CustomEvent(EventType("timerStarted"), CustomEventInit(detail = initialTime, bubbles = true, composed = true))
-        this.dispatchEvent(event)
-    }
-
-    private fun dispatchTimerEnded(initialTime: Int) {
-        val event = CustomEvent(EventType("timerEnded"), CustomEventInit(detail = initialTime, bubbles = true, composed = true))
-        this.dispatchEvent(event)
     }
 }
