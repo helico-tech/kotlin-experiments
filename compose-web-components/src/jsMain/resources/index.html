@@ -7,12 +7,12 @@
     <script src="compose-web-components.js" defer></script>
 </head>
 <body>
-    <timer-component time="100"></timer-component>
+    <timer-component time="10"></timer-component>
     <script>
         const timer = document.querySelector('timer-component');
-        setTimeout(() => {
-            timer.setAttribute("time", 200)
-        }, 1000)
+
+        timer.addEventListener('timerStarted', (evt) => console.log(`Timer started, initial: ${ evt.detail } seconds`));
+        timer.addEventListener('timerEnded', (evt) => console.log(`Timer ended, original: ${ evt.detail } seconds`));
     </script>
 </body>
 </html>

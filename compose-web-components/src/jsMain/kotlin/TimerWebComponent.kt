@@ -16,6 +16,9 @@ import web.components.ShadowRootInit
 import web.components.ShadowRootMode
 import web.cssom.attr
 import web.dom.document
+import web.events.CustomEvent
+import web.events.CustomEventInit
+import web.events.EventType
 import web.html.HTMLElement
 
 @OptIn(ExperimentalJsExport::class)
@@ -50,10 +53,19 @@ class TimerWebComponent : HTMLElement(), CustomElement.WithCallbacks {
 
             LaunchedEffect(initialTime) {
                 currentTime = initialTime
+
                 while (true) {
+                    if (currentTime == initialTime) dispatchTimerStarted(initialTime)
+
+                    delay(1000)
+
                     currentTime -= 1
                     currentTime = currentTime.coerceAtLeast(0)
-                    delay(1000)
+
+                    if (currentTime == 0) {
+                        dispatchTimerEnded(initialTime)
+                        break
+                    }
                 }
             }
 
@@ -71,5 +83,15 @@ class TimerWebComponent : HTMLElement(), CustomElement.WithCallbacks {
 
     override fun adoptedCallback() {
         println("TimerWebComponent adopted!")
+    }
+
+    private fun dispatchTimerStarted(initialTime: Int) {
+        val event = CustomEvent(EventType("timerStarted"), CustomEventInit(detail = initialTime, bubbles = true, composed = true))
+        this.dispatchEvent(event)
+    }
+
+    private fun dispatchTimerEnded(initialTime: Int) {
+        val event = CustomEvent(EventType("timerEnded"), CustomEventInit(detail = initialTime, bubbles = true, composed = true))
+        this.dispatchEvent(event)
     }
 }
