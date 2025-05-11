@@ -7,12 +7,8 @@
     <script src="compose-web-components.js" defer></script>
 </head>
 <body>
-    <timer-component time="10"></timer-component>
-    <script>
-        const timer = document.querySelector('timer-component');
-
-        timer.addEventListener('timerStarted', (evt) => console.log(`Timer started, initial: ${ evt.detail } seconds`));
-        timer.addEventListener('timerEnded', (evt) => console.log(`Timer ended, original: ${ evt.detail } seconds`));
-    </script>
+    <timer-component></timer-component>
+    <multiple-timers></multiple-timers>
+    <ping-pong></ping-pong>
 </body>
 </html>

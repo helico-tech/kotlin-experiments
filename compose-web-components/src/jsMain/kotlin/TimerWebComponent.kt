@@ -1,3 +1,4 @@
+import TimerWebComponent.Attributes.Time
 import TimerWebComponent.Events.TimerEnded
 import TimerWebComponent.Events.TimerStarted
 import androidx.compose.runtime.Composable
@@ -28,9 +29,12 @@ import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.textDecoration
 import org.jetbrains.compose.web.dom.Button
 import org.jetbrains.compose.web.dom.H1
+import org.jetbrains.compose.web.dom.TagElement
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.dom.stringPresentation
+import org.w3c.dom.HTMLElement
 import web.dom.document
+import web.events.CustomEvent
 
 @OptIn(ExperimentalJsExport::class)
 @JsExport
@@ -138,4 +142,21 @@ class TimerWebComponent : ComposedWebComponent(factory = Factory) {
             Text("Stop")
         }
     }
+}
+
+@Composable fun Timer(
+    time: Int,
+    onTimerStarted: ((Int) -> Unit)? = null,
+    onTimerEnded: ((Int) -> Unit)? = null,
+) {
+    TagElement<HTMLElement>(
+        tagName = TimerWebComponent.Factory.tagName,
+        applyAttrs = {
+            attr(Time, time)
+
+            if (onTimerStarted != null) listen(TimerStarted, onTimerStarted)
+            if (onTimerEnded != null) listen(TimerEnded, onTimerEnded)
+        },
+        content = {}
+    )
 }

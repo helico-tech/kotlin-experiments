@@ -1,3 +1,4 @@
+import androidx.compose.web.events.SyntheticEvent
 import js.core.JsAny
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,17 +25,27 @@ abstract class WebComponent(
     rootElementTagName: String = "main",
 ) : HTMLElement(), CustomElement.WithCallbacks, CustomElement.WithAttributeChangedCallback by observedAttributes {
 
-    abstract class Factory<T : WebComponent>(
+    abstract class Factory<T : HTMLElement>(
         val tagName: String,
         val clazz: CustomElementConstructor<T>,
         val attributes: List<ObservedAttribute<*>> = emptyList(),
         val styleSheet: StyleSheet? = null,
+        val dependencies: List<Factory<*>> = emptyList(),
     ) {
+
         fun register() {
+            dependencies.forEach { it.register() }
+
+            val tag = HtmlTagName<T>(tagName)
+            if (customElements.get(tag) != null) {
+                console.warn("Custom element '$tag' already registered!")
+                return
+            }
+
             clazz.asDynamic().observedAttributes = attributes.map { it.name }.toTypedArray()
-            customElements.define(HtmlTagName(tagName), clazz)
+            customElements.define(tag, clazz)
         }
-    }
+     }
 
     data class ObservedAttribute<T>(
         val name: String,
@@ -61,7 +72,16 @@ abstract class WebComponent(
         operator fun <T> get(attr: ObservedAttribute<T>): StateFlow<T> = requireNotNull(getOrNull(attr)) { "Unknown attribute: $attr" }
     }
 
-    data class EventDescriptor<T>(val name: String, val bubbles: Boolean = true, val cancellable: Boolean? = null, val composed: Boolean = true)
+    data class EventDescriptor<T>(val name: String, val bubbles: Boolean = true, val cancellable: Boolean? = null, val composed: Boolean = true) {
+        fun extract(event: SyntheticEvent<*>): T {
+            @Suppress("UNCHECKED_CAST")
+            return extract(event.nativeEvent as CustomEvent<T>)
+        }
+
+        fun extract(event: CustomEvent<T>): T {
+            return event.detail
+        }
+    }
 
     val shadow: ShadowRoot = this.attachShadow(ShadowRootInit(mode = mode))
 

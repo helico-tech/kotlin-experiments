@@ -22,6 +22,7 @@ kotlin {
 
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-browser")
                 implementation(libs.kotlin.coroutines.core)
+                implementation(libs.kotlinx.html.js)
             }
         }
     }

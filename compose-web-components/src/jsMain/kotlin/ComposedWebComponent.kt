@@ -1,5 +1,5 @@
 import androidx.compose.runtime.Composable
-import org.jetbrains.compose.web.css.StyleSheet
+import org.jetbrains.compose.web.attributes.AttrsScope
 import org.jetbrains.compose.web.renderComposable
 import web.components.ShadowRootMode
 
@@ -16,4 +16,14 @@ abstract class ComposedWebComponent(
     }
 
     @Composable abstract fun render()
+}
+
+fun <D> AttrsScope<*>.listen(eventDescriptor: WebComponent.EventDescriptor<D>, listener: (D) -> Unit) {
+    addEventListener(eventDescriptor.name) {
+        listener(eventDescriptor.extract(it))
+    }
+}
+
+fun <T> AttrsScope<*>.attr(observedAttribute: WebComponent.ObservedAttribute<T>, value: T) {
+    attr(observedAttribute.name, value.toString())
 }
