@@ -10,6 +10,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/compose-web-components" />
+            <option value="$PROJECT_DIR$/jobhopper" />
+            <option value="$PROJECT_DIR$/jobhopper/core" />
+            <option value="$PROJECT_DIR$/jobhopper/examples" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -11,3 +13,5 @@ plugins {
 rootProject.name = "kotlin-experiments"
 
 include(":compose-web-components")
+include(":jobhopper:core")
+include(":jobhopper:examples")
