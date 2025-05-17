@@ -1,7 +1,9 @@
 package basic
 
 import kotlinx.coroutines.test.runTest
-import nl.helico.jobhopper.core.InMemoryDataSourceSink
+import nl.helico.jobhopper.core.LiteralDataSource
+import nl.helico.jobhopper.core.component1
+import nl.helico.jobhopper.core.component2
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -9,14 +11,14 @@ class PingPongTests {
 
     @Test
     fun ping() = runTest {
-        val sourceSink = InMemoryDataSourceSink(PING)
+        val (source, sink) = LiteralDataSource(PING)
 
         val job = PingPong(
-            source = sourceSink,
-            sink = sourceSink,
+            source = source,
+            sink = sink,
         )
 
         job.execute()
-        assertEquals(sourceSink.get(), PONG)
+        assertEquals(source.get(), PONG)
     }
 }
