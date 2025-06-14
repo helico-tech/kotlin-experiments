@@ -11,3 +11,4 @@ plugins {
 rootProject.name = "kotlin-experiments"
 
 include(":compose-web-components")
+include(":agents")
