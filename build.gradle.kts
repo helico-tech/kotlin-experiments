@@ -12,5 +12,6 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        maven { url = uri("https://packages.jetbrains.team/maven/p/grazi/grazie-platform-public") }
     }
 }

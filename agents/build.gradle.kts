@@ -13,4 +13,6 @@ dependencies {
     implementation(libs.kafka.clients)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlin.coroutines.core)
+
+    implementation(libs.jetbrains.koog)
 }

@@ -7,6 +7,7 @@ kotlinx-html = "0.12.0"
 kafka = "4.0.0"
 config = "1.4.3"
 serialization = "1.6.2"
+koog = "0.2.1"
 
 [libraries]
 compose-html-core = { module = "org.jetbrains.compose.html:html-core", version.ref = "compose" }
@@ -19,6 +20,7 @@ kotlinx-html-js = { module = "org.jetbrains.kotlinx:kotlinx-html-js", version.re
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
 typesafe-config = { module = "com.typesafe:config", version.ref = "config" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+jetbrains-koog = { module = "ai.koog:koog-agents", version.ref = "koog" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
